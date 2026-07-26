@@ -1,21 +1,74 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
+import api from '../../services/api';
 import toast from 'react-hot-toast';
 import { Sparkles, Mail, Lock, LogIn, ArrowRight } from 'lucide-react';
 
-export default function LoginPage() {
-  const { login, googleLogin } = useAuth();
+function LoginContent() {
+  const { login, refreshUser } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Handle Google OAuth Callback Token
+  useEffect(() => {
+    const handleOAuthCallback = async () => {
+      const token = searchParams.get('token');
+      const error = searchParams.get('error');
+
+      if (error) {
+        toast.error(decodeURIComponent(error));
+        router.replace('/login');
+        return;
+      }
+
+      if (token) {
+        setLoading(true);
+        try {
+          localStorage.setItem('fundorax_token', token);
+          const res = await api.get('/auth/me', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+
+          if (res.data.success && res.data.user) {
+            const loggedInUser = res.data.user;
+            await refreshUser();
+            toast.success(`Welcome, ${loggedInUser.name}!`);
+
+            // Clean query parameters from URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+
+            if (loggedInUser.role === 'Admin') {
+              router.push('/dashboard/admin-home');
+            } else if (loggedInUser.role === 'Creator') {
+              router.push('/dashboard/creator-home');
+            } else {
+              router.push('/dashboard/supporter-home');
+            }
+          } else {
+            toast.error('Authentication failed');
+            router.replace('/login');
+          }
+        } catch (err: any) {
+          toast.error(err.response?.data?.message || 'Google Login error');
+          router.replace('/login');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    handleOAuthCallback();
+  }, [searchParams, refreshUser, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,18 +95,12 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleSignIn = async () => {
+  const handleGoogleSignIn = () => {
     setLoading(true);
-    const mockEmail = `user_${Math.floor(Math.random() * 1000)}@gmail.com`;
-    const res = await googleLogin(mockEmail, 'Google User', 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150', `google_${Date.now()}`);
-    setLoading(false);
-
-    if (res.success && res.user) {
-      toast.success(`Signed in with Google as ${res.user.email}!`);
-      router.push('/dashboard/supporter-home');
-    } else {
-      toast.error(res.message || 'Google Login failed');
-    }
+    // Redirect browser to backend Google OAuth initiation route
+    const rawUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+    const backendUrl = rawUrl.replace(/\/api\/?$/, '').replace(/\/$/, '');
+    window.location.href = `${backendUrl}/api/auth/google`;
   };
 
   return (
@@ -155,5 +202,17 @@ export default function LoginPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#FFF9F5]">
+        <div className="w-10 h-10 border-4 border-[#FF6B4A] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }
