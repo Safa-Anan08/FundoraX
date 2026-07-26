@@ -1,26 +1,63 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --primary: #FF6B4A;
+  --primary-hover: #E85538;
+  --background: #FFF9F5;
+  --surface: #FFFFFF;
+  --text-main: #172033;
+  --text-secondary: #64748B;
+  --accent: #FFC857;
+  --success: #10B981;
+  --error: #EF4444;
+  --border: #E5E7EB;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FFF9F5;
+  color: #172033;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Utility Theme Classes */
+.bg-cream {
+  background-color: #FFF9F5;
+}
+
+.bg-coral {
+  background-color: #FF6B4A;
+}
+
+.bg-coral-hover:hover {
+  background-color: #E85538;
+}
+
+.text-navy {
+  color: #172033;
+}
+
+.text-coral {
+  color: #FF6B4A;
+}
+
+.text-slate-custom {
+  color: #64748B;
+}
+
+.border-soft {
+  border-color: #E5E7EB;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #FFF9F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #FF6B4A;
+  border-radius: 4px;
 }
