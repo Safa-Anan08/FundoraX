@@ -39,9 +39,24 @@ interface Campaign {
   creatorName: string;
 }
 
+const CATEGORY_MAP: Record<string, { icon: React.ElementType; color: string }> = {
+  Technology: { icon: Lightbulb, color: 'bg-blue-50 text-blue-600' },
+  Community: { icon: Globe2, color: 'bg-emerald-50 text-emerald-600' },
+  Innovations: { icon: Rocket, color: 'bg-purple-50 text-purple-600' },
+  Agriculture: { icon: Heart, color: 'bg-amber-50 text-amber-600' },
+};
+
+const DEFAULT_CATEGORY_STYLE = { icon: Sparkles, color: 'bg-rose-50 text-rose-600' };
+
+const getCategoryStyle = (catName: string) => {
+  return CATEGORY_MAP[catName] || DEFAULT_CATEGORY_STYLE;
+};
+
 export default function Home() {
   const [topCampaigns, setTopCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchTopCampaigns = async () => {
@@ -57,7 +72,25 @@ export default function Home() {
       }
     };
 
+    const fetchCategories = async () => {
+      setCategoriesLoading(true);
+      try {
+        const res = await api.get('/campaigns/categories');
+        if (res.data.success && Array.isArray(res.data.categories) && res.data.categories.length > 0) {
+          setCategories(res.data.categories);
+        } else {
+          setCategories(['Technology', 'Community', 'Innovations', 'Agriculture']);
+        }
+      } catch (err) {
+        console.warn('[Fetch Categories Error]', err);
+        setCategories(['Technology', 'Community', 'Innovations', 'Agriculture']);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+
     fetchTopCampaigns();
+    fetchCategories();
   }, []);
 
   const heroSlides = [
@@ -317,28 +350,39 @@ export default function Home() {
               <h2 className="text-3xl font-extrabold text-[#172033] mt-1">Explore by Category</h2>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { name: 'Technology', icon: Lightbulb, color: 'bg-blue-50 text-blue-600' },
-                { name: 'Community', icon: Globe2, color: 'bg-emerald-50 text-emerald-600' },
-                { name: 'Innovations', icon: Rocket, color: 'bg-purple-50 text-purple-600' },
-                { name: 'Agriculture', icon: Heart, color: 'bg-amber-50 text-amber-600' },
-              ].map((cat) => {
-                const Icon = cat.icon;
-                return (
-                  <Link
-                    key={cat.name}
-                    href={`/campaigns?category=${cat.name}`}
-                    className="p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:shadow-md transition-all text-center space-y-3 group"
-                  >
-                    <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center ${cat.color}`}>
-                      <Icon className="w-6 h-6" />
-                    </div>
-                    <h4 className="font-bold text-[#172033] group-hover:text-[#FF6B4A] transition-colors">{cat.name}</h4>
-                  </Link>
-                );
-              })}
-            </div>
+            {categoriesLoading ? (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                  <div key={i} className="p-6 bg-white rounded-2xl border border-[#E5E7EB] animate-pulse text-center space-y-3">
+                    <div className="w-12 h-12 mx-auto rounded-xl bg-slate-100"></div>
+                    <div className="h-4 bg-slate-100 rounded-md w-24 mx-auto"></div>
+                  </div>
+                ))}
+              </div>
+            ) : categories.length === 0 ? (
+              <div className="text-center py-8 text-[#64748B] text-sm font-semibold">
+                No categories available at the moment.
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {categories.map((catName) => {
+                  const style = getCategoryStyle(catName);
+                  const Icon = style.icon;
+                  return (
+                    <Link
+                      key={catName}
+                      href={`/campaigns?category=${encodeURIComponent(catName)}`}
+                      className="p-6 bg-white rounded-2xl border border-[#E5E7EB] shadow-xs hover:shadow-md transition-all text-center space-y-3 group"
+                    >
+                      <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center ${style.color}`}>
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <h4 className="font-bold text-[#172033] group-hover:text-[#FF6B4A] transition-colors">{catName}</h4>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </section>
 

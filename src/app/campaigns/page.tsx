@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -19,14 +20,39 @@ interface Campaign {
   creatorName: string;
 }
 
-export default function ExploreCampaignsPage() {
+function ExploreCampaignsContent() {
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get('category') || 'All';
+
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [search, setSearch] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [categories, setCategories] = useState<string[]>(['All', 'Technology', 'Community', 'Innovations', 'Agriculture']);
 
-  const categories = ['All', 'Technology', 'Community', 'Innovations', 'Agriculture'];
+  // Sync state if URL query param changes
+  useEffect(() => {
+    const cat = searchParams.get('category');
+    if (cat) {
+      setSelectedCategory(cat);
+    }
+  }, [searchParams]);
+
+  // Dynamically fetch unique categories from database
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await api.get('/campaigns/categories');
+        if (res.data.success && Array.isArray(res.data.categories) && res.data.categories.length > 0) {
+          setCategories(['All', ...res.data.categories]);
+        }
+      } catch (err) {
+        console.warn('[Fetch Categories Error]', err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   const fetchCampaigns = async () => {
     setLoading(true);
@@ -240,5 +266,13 @@ export default function ExploreCampaignsPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function ExploreCampaignsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-[#FFF9F5] text-[#64748B] font-semibold">Loading campaigns...</div>}>
+      <ExploreCampaignsContent />
+    </Suspense>
   );
 }
