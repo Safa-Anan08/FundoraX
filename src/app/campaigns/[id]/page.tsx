@@ -17,7 +17,7 @@ import {
   AlertTriangle,
   Send,
   ArrowLeft,
-  Sparkles,
+  HandHeart,
   CheckCircle2,
   Lock,
   Flag,
@@ -216,7 +216,7 @@ export default function CampaignDetailsPage() {
       <Navbar />
 
       <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        
+
         {/* Breadcrumb & Navigation */}
         <div className="mb-6 flex items-center justify-between">
           <Link
@@ -243,7 +243,7 @@ export default function CampaignDetailsPage() {
 
         {/* Campaign Hero Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
+
           {/* Left Column: Image, Story, Reward Info */}
           <div className="lg:col-span-2 space-y-8">
             <div className="bg-white rounded-3xl overflow-hidden border border-[#E5E7EB] shadow-sm">
@@ -304,10 +304,10 @@ export default function CampaignDetailsPage() {
 
           {/* Right Column: Funding Progress & Contribution Form */}
           <div className="space-y-6">
-            
+
             {/* Funding Card */}
             <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#E5E7EB] shadow-md space-y-6 sticky top-24">
-              
+
               <div className="space-y-2">
                 <p className="text-xs font-bold uppercase tracking-wider text-[#64748B]">Total Raised</p>
                 <div className="flex items-baseline gap-2">

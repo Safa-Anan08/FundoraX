@@ -7,7 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import toast from 'react-hot-toast';
-import { Sparkles, Mail, Lock, User as UserIcon, Image as ImageIcon, UserCheck, Coins, Upload } from 'lucide-react';
+import { HandHeart, Mail, Lock, User as UserIcon, Image as ImageIcon, UserCheck, Coins, Upload } from 'lucide-react';
 
 export default function RegisterPage() {
   const { register } = useAuth();
@@ -102,7 +102,7 @@ export default function RegisterPage() {
         <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-[#E5E7EB] shadow-xl space-y-6">
           <div className="text-center space-y-2">
             <div className="w-12 h-12 mx-auto rounded-2xl bg-[#FF6B4A] flex items-center justify-center text-white font-bold shadow-md shadow-[#FF6B4A]/20">
-              <Sparkles className="w-6 h-6" />
+              <HandHeart className="w-6 h-6" />
             </div>
             <h2 className="text-2xl font-extrabold text-[#172033]">Create Your Account</h2>
             <p className="text-xs text-[#64748B]">Join FundoraX to back projects or launch campaigns.</p>
@@ -116,11 +116,10 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setRole('Supporter')}
-                  className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
-                    role === 'Supporter'
+                  className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${role === 'Supporter'
                       ? 'border-[#FF6B4A] bg-[#FFF9F5] ring-2 ring-[#FF6B4A]/30'
                       : 'border-[#E5E7EB] bg-white hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-bold text-[#172033]">Supporter</span>
@@ -132,15 +131,14 @@ export default function RegisterPage() {
                 <button
                   type="button"
                   onClick={() => setRole('Creator')}
-                  className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${
-                    role === 'Creator'
+                  className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${role === 'Creator'
                       ? 'border-[#FF6B4A] bg-[#FFF9F5] ring-2 ring-[#FF6B4A]/30'
                       : 'border-[#E5E7EB] bg-white hover:bg-slate-50'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-bold text-[#172033]">Creator</span>
-                    <Sparkles className="w-4 h-4 text-[#FFC857]" />
+                    <HandHeart className="w-4 h-4 text-[#FFC857]" />
                   </div>
                   <span className="text-[11px] font-semibold text-[#10B981] mt-1">+20 Initial Credits</span>
                 </button>

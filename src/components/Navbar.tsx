@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
-import { Sparkles, Menu, X, Coins, LogOut, LayoutDashboard, User as UserIcon } from 'lucide-react';
+import { HandHeart, Menu, X, Coins, LogOut, LayoutDashboard, User as UserIcon } from 'lucide-react';
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -16,17 +16,17 @@ export default function Navbar() {
     return '/dashboard/supporter-home';
   };
 
-  const GITHUB_REPO_URL = 'https://github.com/fundorax/fundorax-crowdfunding-platform';
+  const GITHUB_REPO_URL = 'https://github.com/Safa-Anan08/FundoraX';
 
   return (
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#E5E7EB] shadow-xs transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          
+
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-xl bg-[#FF6B4A] flex items-center justify-center text-white font-bold shadow-md shadow-[#FF6B4A]/30 group-hover:bg-[#E85538] transition-all">
-              <Sparkles className="w-6 h-6 animate-pulse" />
+              <HandHeart className="w-6 h-6 animate-pulse" />
             </div>
             <span className="text-2xl font-extrabold text-[#172033] tracking-tight">
               Fundora<span className="text-[#FF6B4A]">X</span>

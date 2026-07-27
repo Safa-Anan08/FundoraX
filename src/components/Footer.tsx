@@ -2,19 +2,19 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { Sparkles, Mail, Phone, MapPin } from 'lucide-react';
+import { HandHeart, Mail, Phone, MapPin } from 'lucide-react';
 
 export default function Footer() {
   return (
     <footer className="bg-[#172033] text-white pt-16 pb-12 border-t border-[#172033]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          
+
           {/* Brand & Description */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <div className="w-9 h-9 rounded-xl bg-[#FF6B4A] flex items-center justify-center text-white font-bold">
-                <Sparkles className="w-5 h-5" />
+                <HandHeart className="w-5 h-5" />
               </div>
               <span className="text-2xl font-extrabold text-white tracking-tight">
                 Fundora<span className="text-[#FF6B4A]">X</span>
@@ -27,7 +27,7 @@ export default function Footer() {
             {/* Social Links (Clean Brand SVGs) */}
             <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://github.com/fundorax"
+                href="https://github.com/Safa-Anan08/FundoraX"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#FF6B4A] flex items-center justify-center text-white transition-all"
@@ -38,7 +38,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://linkedin.com/company/fundorax"
+                href="https://www.linkedin.com/in/safa-anan"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#FF6B4A] flex items-center justify-center text-white transition-all"
@@ -49,7 +49,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://facebook.com/fundorax"
+                href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#FF6B4A] flex items-center justify-center text-white transition-all"

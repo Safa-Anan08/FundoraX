@@ -7,7 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 import ProtectedRoute from '../../components/ProtectedRoute';
 import api from '../../services/api';
 import {
-  Sparkles,
+  HandHeart,
   Coins,
   Bell,
   Home,
@@ -121,12 +121,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-[#FFF9F5] flex flex-col md:flex-row overflow-x-hidden">
-        
+
         {/* Mobile Header Bar */}
         <header className="md:hidden sticky top-0 z-40 bg-white border-b border-[#E5E7EB] px-4 py-3 flex items-center justify-between shadow-xs">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-lg bg-[#FF6B4A] flex items-center justify-center text-white font-bold">
-              <Sparkles className="w-5 h-5" />
+              <HandHeart className="w-5 h-5" />
             </div>
             <span className="text-xl font-extrabold text-[#172033]">
               Fundora<span className="text-[#FF6B4A]">X</span>
@@ -167,16 +167,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Sidebar Container (Fixed desktop / Collapsible drawer mobile) */}
         <aside
-          className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-[#E5E7EB] transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:inset-auto flex flex-col justify-between ${
-            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}
+          className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-[#E5E7EB] transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:inset-auto flex flex-col justify-between ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+            }`}
         >
           <div>
             {/* Sidebar Brand Header */}
             <div className="h-16 px-6 flex items-center justify-between border-b border-[#E5E7EB]">
               <Link href="/" className="flex items-center gap-2">
                 <div className="w-9 h-9 rounded-xl bg-[#FF6B4A] flex items-center justify-center text-white font-bold shadow-md shadow-[#FF6B4A]/20">
-                  <Sparkles className="w-5 h-5" />
+                  <HandHeart className="w-5 h-5" />
                 </div>
                 <span className="text-xl font-extrabold text-[#172033] tracking-tight">
                   Fundora<span className="text-[#FF6B4A]">X</span>
@@ -234,11 +233,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     key={item.href}
                     href={item.href}
                     onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all ${
-                      isActive
+                    className={`flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-semibold transition-all ${isActive
                         ? 'bg-[#FF6B4A] text-white shadow-sm shadow-[#FF6B4A]/30'
                         : 'text-[#172033] hover:bg-[#FFF9F5] hover:text-[#FF6B4A]'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center gap-3">
                       <Icon className="w-4 h-4" />
@@ -281,7 +279,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Main Dashboard Area */}
         <div className="flex-1 flex flex-col min-w-0">
-          
+
           {/* Desktop Top Navbar Bar */}
           <header className="hidden md:flex sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-[#E5E7EB] px-8 py-3 justify-between items-center shadow-xs">
             <div>
@@ -330,9 +328,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                           <div
                             key={n._id}
                             onClick={() => handleNotificationClick(n)}
-                            className={`p-3.5 text-xs cursor-pointer hover:bg-[#FFF9F5] transition-colors ${
-                              !n.isRead ? 'bg-[#FFF9F5]/70 font-semibold border-l-4 border-[#FF6B4A]' : 'text-[#64748B]'
-                            }`}
+                            className={`p-3.5 text-xs cursor-pointer hover:bg-[#FFF9F5] transition-colors ${!n.isRead ? 'bg-[#FFF9F5]/70 font-semibold border-l-4 border-[#FF6B4A]' : 'text-[#64748B]'
+                              }`}
                           >
                             <p className="text-[#172033] leading-relaxed mb-1">{n.message}</p>
                             <span className="text-[10px] text-[#64748B]">

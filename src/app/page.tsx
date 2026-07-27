@@ -23,10 +23,11 @@ import {
   Coins,
   ArrowRight,
   CheckCircle2,
-  Sparkles,
+  HandHeart,
   Lightbulb,
   Globe2,
   Heart,
+
 } from 'lucide-react';
 
 interface Campaign {
@@ -46,7 +47,7 @@ const CATEGORY_MAP: Record<string, { icon: React.ElementType; color: string }> =
   Agriculture: { icon: Heart, color: 'bg-amber-50 text-amber-600' },
 };
 
-const DEFAULT_CATEGORY_STYLE = { icon: Sparkles, color: 'bg-rose-50 text-rose-600' };
+const DEFAULT_CATEGORY_STYLE = { icon: HandHeart, color: 'bg-rose-50 text-rose-600' };
 
 const getCategoryStyle = (catName: string) => {
   return CATEGORY_MAP[catName] || DEFAULT_CATEGORY_STYLE;
@@ -96,30 +97,51 @@ export default function Home() {
   const heroSlides = [
     {
       id: 1,
-      badge: '✨ Next-Gen Crowdfunding',
-      heading: 'Fuel the Future of Visionary Innovation',
-      description: 'Back ground-breaking projects with secure credits, support independent creators, and earn exclusive rewards on FundoraX.',
-      ctaText: 'Explore Approved Campaigns',
-      ctaLink: '/campaigns',
-      image: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200',
+      badge: (
+        <span className="flex items-center gap-2">
+          <Lightbulb className="w-4 h-4 text-yellow-400" />
+          Next-Gen Crowdfunding
+        </span>
+      ),
+      heading: "Fuel the Future of Visionary Innovation",
+      description:
+        "Back groundbreaking projects with secure credits, support independent creators, and earn exclusive rewards on FundoraX.",
+      ctaText: "Explore Approved Campaigns",
+      ctaLink: "/campaigns",
+      image:
+        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=80",
     },
     {
       id: 2,
-      badge: '🚀 For Creators & Innovators',
-      heading: 'Turn Passion Into Real-World Impact',
-      description: 'Launch your campaign in minutes, manage supporter contributions, and request hassle-free payouts with low 20:1 credit conversion.',
-      ctaText: 'Start Your Campaign',
-      ctaLink: '/register?role=Creator',
-      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200',
+      badge: (
+        <span className="flex items-center gap-2">
+          <Rocket className="w-4 h-4 text-sky-400" />
+          For Creators & Innovators
+        </span>
+      ),
+      heading: "Turn Passion Into Real-World Impact",
+      description:
+        "Launch your campaign in minutes, manage supporter contributions, and request hassle-free payouts.",
+      ctaText: "Start Your Campaign",
+      ctaLink: "/register?role=Creator",
+      image:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80",
     },
     {
       id: 3,
-      badge: '🛡️ Verified & Transparent',
-      heading: 'Every Credit Accounted & Backed',
-      description: 'Join thousands of backers building the world of tomorrow with transparent admin auditing and instant credit refunds.',
-      ctaText: 'Claim 50 Free Credits',
-      ctaLink: '/register',
-      image: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200',
+      badge: (
+        <span className="flex items-center gap-2">
+          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          Verified & Transparent
+        </span>
+      ),
+      heading: "Every Credit Accounted & Backed",
+      description:
+        "Join thousands of backers building tomorrow through trusted campaigns, transparent funding, and secure transactions.",
+      ctaText: "Claim 50 Free Credits",
+      ctaLink: "/register",
+      image:
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&q=80",
     },
   ];
 
@@ -152,7 +174,7 @@ export default function Home() {
       <Navbar />
 
       <main className="flex-1">
-        
+
         {/* 1. HERO SLIDER SECTION */}
         <section className="relative bg-[#172033] text-white py-12 lg:py-20 overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

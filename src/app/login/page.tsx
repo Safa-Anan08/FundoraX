@@ -8,7 +8,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
-import { Sparkles, Mail, Lock, LogIn, ArrowRight } from 'lucide-react';
+import { HandHeart, Mail, Lock, LogIn, ArrowRight } from 'lucide-react';
 
 function LoginContent() {
   const { login, refreshUser } = useAuth();
@@ -111,7 +111,7 @@ function LoginContent() {
         <div className="max-w-md w-full bg-white rounded-3xl p-8 border border-[#E5E7EB] shadow-xl space-y-6">
           <div className="text-center space-y-2">
             <div className="w-12 h-12 mx-auto rounded-2xl bg-[#FF6B4A] flex items-center justify-center text-white font-bold shadow-md shadow-[#FF6B4A]/20">
-              <Sparkles className="w-6 h-6" />
+              <HandHeart className="w-6 h-6" />
             </div>
             <h2 className="text-2xl font-extrabold text-[#172033]">Log In to FundoraX</h2>
             <p className="text-xs text-[#64748B]">Access your credits, campaigns, and account overview.</p>
