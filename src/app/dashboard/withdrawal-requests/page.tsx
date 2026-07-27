@@ -61,7 +61,7 @@ export default function WithdrawalRequestsPage() {
   return (
     <>
       <div className="space-y-6">
-        
+
         {/* Header */}
         <div>
           <h1 className="text-2xl font-black text-[#172033]">Creator Withdrawal Requests</h1>
@@ -70,7 +70,7 @@ export default function WithdrawalRequestsPage() {
 
         {/* Table Container */}
         <div className="bg-white rounded-3xl border border-[#E5E7EB] shadow-xs overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="hidden lg:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-[#FFF9F5] text-[11px] font-extrabold text-[#64748B] uppercase tracking-wider border-b border-[#E5E7EB]">
@@ -121,6 +121,70 @@ export default function WithdrawalRequestsPage() {
                 )}
               </tbody>
             </table>
+          </div>
+          <div className="lg:hidden p-4 space-y-4">
+            {loading ? (
+              <div className="text-center py-8 text-[#64748B]">
+                Loading withdrawal requests...
+              </div>
+            ) : withdrawals.length === 0 ? (
+              <div className="text-center py-10 text-[#64748B]">
+                No pending creator withdrawal requests!
+              </div>
+            ) : (
+              withdrawals.map((w) => (
+                <div
+                  key={w._id}
+                  className="bg-white border border-[#E5E7EB] rounded-2xl shadow-sm p-4 space-y-4"
+                >
+                  <div>
+                    <h3 className="font-bold text-[#172033]">
+                      {w.creatorName}
+                    </h3>
+
+                    <p className="text-xs text-[#64748B] break-all">
+                      {w.creatorEmail}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-y-3 text-xs">
+                    <span className="text-[#64748B]">Credits</span>
+                    <span className="font-bold text-[#FF6B4A]">
+                      {w.withdrawalCredit} Credits
+                    </span>
+
+                    <span className="text-[#64748B]">Amount</span>
+                    <span className="font-bold text-[#10B981]">
+                      ${w.withdrawalAmount}
+                    </span>
+
+                    <span className="text-[#64748B]">Gateway</span>
+                    <span>{w.paymentSystem}</span>
+
+                    <span className="text-[#64748B]">Account</span>
+                    <span className="break-all">
+                      {w.accountNumber}
+                    </span>
+
+                    <span className="text-[#64748B]">Date</span>
+                    <span>
+                      {new Date(w.withdrawDate).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => handlePaymentSuccess(w._id)}
+                    disabled={processingId === w._id}
+                    className="w-full py-3 bg-[#10B981] hover:bg-emerald-600 text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    {processingId === w._id
+                      ? "Processing..."
+                      : "Payment Success"}
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
 

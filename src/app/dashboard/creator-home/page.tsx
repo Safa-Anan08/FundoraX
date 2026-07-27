@@ -54,7 +54,7 @@ export default function CreatorHomePage() {
   return (
     <>
       <div className="space-y-8">
-        
+
         {/* Header Title */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -161,7 +161,7 @@ export default function CreatorHomePage() {
             </Link>
           </div>
 
-          <div className="overflow-x-auto">
+          <div className="hidden lg:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-[#FFF9F5] text-[11px] font-extrabold text-[#64748B] uppercase tracking-wider border-b border-[#E5E7EB]">
@@ -192,13 +192,12 @@ export default function CreatorHomePage() {
                       <td className="p-4 font-bold text-[#FF6B4A]">{c.raisedAmount} Credits</td>
                       <td className="p-4">
                         <span
-                          className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase ${
-                            c.status === 'approved'
+                          className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase ${c.status === 'approved'
                               ? 'bg-[#10B981]/15 text-[#10B981]'
                               : c.status === 'rejected'
-                              ? 'bg-red-50 text-[#EF4444]'
-                              : 'bg-[#FFC857]/30 text-[#172033]'
-                          }`}
+                                ? 'bg-red-50 text-[#EF4444]'
+                                : 'bg-[#FFC857]/30 text-[#172033]'
+                            }`}
                         >
                           {c.status}
                         </span>
@@ -208,6 +207,65 @@ export default function CreatorHomePage() {
                 )}
               </tbody>
             </table>
+          </div>
+          <div className="lg:hidden p-4 space-y-4">
+            {loading ? (
+              <div className="text-center py-8 text-[#64748B]">
+                Loading campaigns...
+              </div>
+            ) : campaigns.length === 0 ? (
+              <div className="text-center py-10 text-[#64748B]">
+                <p>You have not created any campaigns yet.</p>
+
+                <Link
+                  href="/dashboard/add-campaign"
+                  className="text-[#FF6B4A] font-bold underline mt-2 inline-block"
+                >
+                  Create one now!
+                </Link>
+              </div>
+            ) : (
+              campaigns.slice(0, 5).map((c) => (
+                <div
+                  key={c._id}
+                  className="bg-white border border-[#E5E7EB] rounded-2xl shadow-sm p-4 space-y-4"
+                >
+                  <div>
+                    <h3 className="font-bold text-[#172033]">
+                      {c.title}
+                    </h3>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-y-3 text-xs">
+                    <span className="text-[#64748B]">Category</span>
+                    <span>{c.category}</span>
+
+                    <span className="text-[#64748B]">Goal</span>
+                    <span className="font-bold text-[#172033]">
+                      {c.fundingGoal} Credits
+                    </span>
+
+                    <span className="text-[#64748B]">Raised</span>
+                    <span className="font-bold text-[#FF6B4A]">
+                      {c.raisedAmount} Credits
+                    </span>
+
+                    <span className="text-[#64748B]">Status</span>
+
+                    <span
+                      className={`inline-flex w-fit px-3 py-1 rounded-full text-[10px] font-bold uppercase ${c.status === "approved"
+                          ? "bg-[#10B981]/15 text-[#10B981]"
+                          : c.status === "rejected"
+                            ? "bg-red-50 text-[#EF4444]"
+                            : "bg-[#FFC857]/30 text-[#172033]"
+                        }`}
+                    >
+                      {c.status}
+                    </span>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 

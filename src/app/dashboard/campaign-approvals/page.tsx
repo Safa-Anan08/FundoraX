@@ -77,7 +77,7 @@ export default function CampaignApprovalsPage() {
   return (
     <>
       <div className="space-y-6">
-        
+
         {/* Header */}
         <div>
           <h1 className="text-2xl font-black text-[#172033]">Campaign Approvals Queue</h1>
@@ -86,7 +86,7 @@ export default function CampaignApprovalsPage() {
 
         {/* Table Container */}
         <div className="bg-white rounded-3xl border border-[#E5E7EB] shadow-xs overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="hidden lg:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-[#FFF9F5] text-[11px] font-extrabold text-[#64748B] uppercase tracking-wider border-b border-[#E5E7EB]">
@@ -143,6 +143,79 @@ export default function CampaignApprovalsPage() {
                 )}
               </tbody>
             </table>
+          </div>
+          <div className="lg:hidden p-4 space-y-4">
+            {loading ? (
+              <div className="text-center py-8 text-[#64748B]">
+                Loading pending approvals...
+              </div>
+            ) : campaigns.length === 0 ? (
+              <div className="text-center py-10 text-[#64748B]">
+                No pending campaign approval requests!
+              </div>
+            ) : (
+              campaigns.map((c) => (
+                <div
+                  key={c._id}
+                  className="bg-white border border-[#E5E7EB] rounded-2xl shadow-sm p-4 space-y-4"
+                >
+                  <div>
+                    <h3 className="font-bold text-[#172033] text-base">
+                      {c.title}
+                    </h3>
+
+                    <p className="text-xs text-[#64748B] mt-1">
+                      {c.category}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-y-3 text-xs">
+                    <span className="text-[#64748B]">Creator</span>
+                    <div>
+                      <p className="font-semibold text-[#172033]">
+                        {c.creatorName}
+                      </p>
+                      <p className="text-[11px] text-[#64748B] break-all">
+                        {c.creatorEmail}
+                      </p>
+                    </div>
+
+                    <span className="text-[#64748B]">Funding Goal</span>
+                    <span className="font-bold text-[#FF6B4A]">
+                      {c.fundingGoal} Credits
+                    </span>
+
+                    <span className="text-[#64748B]">Deadline</span>
+                    <span>
+                      {new Date(c.deadline).toLocaleDateString()}
+                    </span>
+
+                    <span className="text-[#64748B]">Submitted</span>
+                    <span>
+                      {new Date(c.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => handleReject(c._id)}
+                      disabled={processingId === c._id}
+                      className="flex-1 py-3 bg-red-50 hover:bg-red-100 text-[#EF4444] border border-red-200 rounded-xl font-bold text-sm disabled:opacity-50"
+                    >
+                      Reject
+                    </button>
+
+                    <button
+                      onClick={() => handleApprove(c._id)}
+                      disabled={processingId === c._id}
+                      className="flex-1 py-3 bg-[#10B981] hover:bg-emerald-600 text-white rounded-xl font-bold text-sm disabled:opacity-50"
+                    >
+                      Approve
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 

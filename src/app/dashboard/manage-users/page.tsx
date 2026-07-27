@@ -77,7 +77,7 @@ export default function ManageUsersPage() {
   return (
     <>
       <div className="space-y-6">
-        
+
         {/* Header */}
         <div>
           <h1 className="text-2xl font-black text-[#172033]">Manage Platform Users</h1>
@@ -86,7 +86,7 @@ export default function ManageUsersPage() {
 
         {/* User Table Container */}
         <div className="bg-white rounded-3xl border border-[#E5E7EB] shadow-xs overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="hidden lg:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-[#FFF9F5] text-[11px] font-extrabold text-[#64748B] uppercase tracking-wider border-b border-[#E5E7EB]">
@@ -150,6 +150,81 @@ export default function ManageUsersPage() {
                 )}
               </tbody>
             </table>
+
+          </div>
+          <div className="lg:hidden p-4 space-y-4">
+            {loading ? (
+              <div className="text-center py-8 text-[#64748B]">
+                Loading user accounts...
+              </div>
+            ) : users.length === 0 ? (
+              <div className="text-center py-10 text-[#64748B]">
+                No users found.
+              </div>
+            ) : (
+              users.map((u) => (
+                <div
+                  key={u._id}
+                  className="bg-white border border-[#E5E7EB] rounded-2xl shadow-sm p-4 space-y-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={u.photo || "https://i.ibb.co/MgsTCzP/default-avatar.png"}
+                      alt={u.name}
+                      className="w-12 h-12 rounded-full object-cover border border-[#FF6B4A]"
+                    />
+
+                    <div className="min-w-0">
+                      <h3 className="font-bold text-[#172033]">
+                        {u.name}
+                      </h3>
+
+                      <p className="text-xs text-[#64748B] break-all">
+                        {u.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-y-3 text-xs">
+                    <span className="text-[#64748B]">Role</span>
+
+                    <select
+                      value={u.role}
+                      onChange={(e) =>
+                        handleRoleChange(u._id, e.target.value)
+                      }
+                      disabled={processingId === u._id}
+                      className="px-2 py-1 bg-[#FFF9F5] border border-[#E5E7EB] rounded-lg font-bold text-[#172033]"
+                    >
+                      <option value="Supporter">Supporter</option>
+                      <option value="Creator">Creator</option>
+                      <option value="Admin">Admin</option>
+                    </select>
+
+                    <span className="text-[#64748B]">Credits</span>
+
+                    <span className="font-bold text-[#FF6B4A]">
+                      {u.credits} Credits
+                    </span>
+
+                    <span className="text-[#64748B]">Registered</span>
+
+                    <span>
+                      {new Date(u.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={() => handleDeleteUser(u._id, u.name)}
+                    disabled={processingId === u._id}
+                    className="w-full py-3 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl text-[#EF4444] font-bold flex items-center justify-center gap-2 disabled:opacity-50"
+                  >
+                    <UserX className="w-4 h-4" />
+                    Remove User
+                  </button>
+                </div>
+              ))
+            )}
           </div>
         </div>
 

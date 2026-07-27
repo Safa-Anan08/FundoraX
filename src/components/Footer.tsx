@@ -3,8 +3,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { HandHeart, Mail, Phone, MapPin } from 'lucide-react';
-
+import { useAuth } from '../context/AuthContext';
 export default function Footer() {
+
+  const getDashboardRoute = () => {
+    const { user } = useAuth();
+    if (!user) return '/login';
+    if (user.role === 'Admin') return '/dashboard/admin-home';
+    if (user.role === 'Creator') return '/dashboard/creator-home';
+    return '/dashboard/supporter-home';
+  };
   return (
     <footer className="bg-[#172033] text-white pt-16 pb-12 border-t border-[#172033]/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -74,9 +82,10 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/dashboard" className="hover:text-[#FF6B4A] transition-colors">
+                <Link href={getDashboardRoute()} className="hover:text-[#FF6B4A] transition-colors">
                   User Dashboard
                 </Link>
+
               </li>
               <li>
                 <Link href="/register?role=Creator" className="hover:text-[#FF6B4A] transition-colors">
@@ -132,11 +141,11 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#FF6B4A]" />
-                <span>+1 (800) 555-FUND</span>
+                <span>+880 1700-000000</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <MapPin className="w-4 h-4 text-[#FF6B4A]" />
-                <span>Silicon Valley, CA, USA</span>
+                <span>Dhaka, Bangladesh</span>
               </li>
             </ul>
           </div>

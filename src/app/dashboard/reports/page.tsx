@@ -85,7 +85,7 @@ export default function ReportsAuditPage() {
 
         {/* Table Container */}
         <div className="bg-white rounded-3xl border border-[#E5E7EB] shadow-xs overflow-hidden">
-          <div className="overflow-x-auto">
+          <div className="hidden lg:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-[#FFF9F5] text-[11px] font-extrabold text-[#64748B] uppercase tracking-wider border-b border-[#E5E7EB]">
@@ -139,6 +139,72 @@ export default function ReportsAuditPage() {
                 )}
               </tbody>
             </table>
+          </div>
+          <div className="lg:hidden p-4 space-y-4">
+            {loading ? (
+              <div className="text-center py-8 text-[#64748B]">
+                Loading campaign reports...
+              </div>
+            ) : reports.length === 0 ? (
+              <div className="text-center py-10 text-[#64748B]">
+                No campaign reports submitted yet!
+              </div>
+            ) : (
+              reports.map((r) => (
+                <div
+                  key={r._id}
+                  className="bg-white border border-[#E5E7EB] rounded-2xl shadow-sm p-4 space-y-4"
+                >
+                  <div>
+                    <h3 className="font-bold text-[#172033]">
+                      {r.campaignTitle}
+                    </h3>
+
+                    <p className="text-xs text-[#64748B] mt-1">
+                      Reported by <span className="font-semibold">{r.reporterName}</span>
+                    </p>
+                  </div>
+
+                  <div className="space-y-3 text-xs">
+                    <div>
+                      <p className="text-[#64748B] mb-1">Reason</p>
+                      <div className="bg-red-50 border border-red-100 rounded-xl p-3 text-[#EF4444] leading-relaxed">
+                        {r.reason}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-y-2">
+                      <span className="text-[#64748B]">Reported</span>
+                      <span>{new Date(r.createdAt).toLocaleString()}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() =>
+                        handleSuspendCampaign(r.campaign, r.campaignTitle)
+                      }
+                      disabled={processingId === r.campaign}
+                      className="flex-1 py-3 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl text-amber-800 font-bold flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      <Ban className="w-4 h-4" />
+                      Suspend
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        handleDeleteCampaign(r.campaign, r.campaignTitle)
+                      }
+                      disabled={processingId === r.campaign}
+                      className="flex-1 py-3 bg-red-50 hover:bg-red-100 border border-red-200 rounded-xl text-[#EF4444] font-bold flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
 
