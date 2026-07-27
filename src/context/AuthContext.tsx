@@ -59,14 +59,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const refreshUser = async () => {
-    if (!token) return;
+    const storedToken =
+      token || localStorage.getItem("fundorax_token");
+
+    if (!storedToken) return;
+
     try {
-      const res = await api.get('/auth/me');
+      const res = await api.get("/auth/me", {
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+        },
+      });
+
       if (res.data.success && res.data.user) {
+        setToken(storedToken);
         setUser(res.data.user);
       }
     } catch (err) {
-      console.warn('[AuthContext] refreshUser failed:', err);
+      console.warn("[AuthContext] refreshUser failed:", err);
+
+      localStorage.removeItem("fundorax_token");
+      setToken(null);
+      setUser(null);
     }
   };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
@@ -19,56 +19,71 @@ function LoginContent() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Handle Google OAuth Callback Token
+  const oauthHandled = useRef(false);
+
   useEffect(() => {
     const handleOAuthCallback = async () => {
-      const token = searchParams.get('token');
-      const error = searchParams.get('error');
+      const token = searchParams.get("token");
+      const error = searchParams.get("error");
 
       if (error) {
         toast.error(decodeURIComponent(error));
-        router.replace('/login');
+        router.replace("/login");
         return;
       }
 
-      if (token) {
-        setLoading(true);
-        try {
-          localStorage.setItem('fundorax_token', token);
-          const res = await api.get('/auth/me', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
+      if (!token) return;
 
-          if (res.data.success && res.data.user) {
-            const loggedInUser = res.data.user;
-            await refreshUser();
-            toast.success(`Welcome, ${loggedInUser.name}!`);
+      if (oauthHandled.current) return;
+      oauthHandled.current = true;
 
-            // Clean query parameters from URL
-            window.history.replaceState({}, document.title, window.location.pathname);
+      setLoading(true);
 
-            if (loggedInUser.role === 'Admin') {
-              router.push('/dashboard/admin-home');
-            } else if (loggedInUser.role === 'Creator') {
-              router.push('/dashboard/creator-home');
-            } else {
-              router.push('/dashboard/supporter-home');
-            }
-          } else {
-            toast.error('Authentication failed');
-            router.replace('/login');
-          }
-        } catch (err: any) {
-          toast.error(err.response?.data?.message || 'Google Login error');
-          router.replace('/login');
-        } finally {
-          setLoading(false);
+      try {
+        localStorage.setItem("fundorax_token", token);
+
+        // Sync AuthContext
+        await refreshUser();
+
+        // Get latest user
+        const res = await api.get("/auth/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.data.success) {
+          toast.error("Authentication failed");
+          router.replace("/login");
+          return;
         }
+
+        const loggedInUser = res.data.user;
+
+        toast.success(`Welcome, ${loggedInUser.name}!`);
+
+        switch (loggedInUser.role) {
+          case "Admin":
+            router.replace("/dashboard/admin-home");
+            break;
+
+          case "Creator":
+            router.replace("/dashboard/creator-home");
+            break;
+
+          default:
+            router.replace("/dashboard/supporter-home");
+        }
+      } catch (err: any) {
+        toast.error(err.response?.data?.message || "Google Login failed");
+        router.replace("/login");
+      } finally {
+        setLoading(false);
       }
     };
 
     handleOAuthCallback();
-  }, [searchParams, refreshUser, router]);
+  }, [searchParams, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,11 +99,11 @@ function LoginContent() {
     if (res.success && res.user) {
       toast.success(`Welcome back, ${res.user.name}!`);
       if (res.user.role === 'Admin') {
-        router.push('/dashboard/admin-home');
+        router.replace('/dashboard/admin-home');
       } else if (res.user.role === 'Creator') {
-        router.push('/dashboard/creator-home');
+        router.replace('/dashboard/creator-home');
       } else {
-        router.push('/dashboard/supporter-home');
+        router.replace('/dashboard/supporter-home');
       }
     } else {
       toast.error(res.message || 'Login failed');

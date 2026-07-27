@@ -85,9 +85,9 @@ export default function RegisterPage() {
       const initialBonus = role === 'Creator' ? 20 : 50;
       toast.success(`Account created! You received ${initialBonus} initial credits.`);
       if (res.user.role === 'Creator') {
-        router.push('/dashboard/creator-home');
+        router.replace('/dashboard/creator-home');
       } else {
-        router.push('/dashboard/supporter-home');
+        router.replace('/dashboard/supporter-home');
       }
     } else {
       toast.error(res.message || 'Registration failed');
@@ -117,8 +117,8 @@ export default function RegisterPage() {
                   type="button"
                   onClick={() => setRole('Supporter')}
                   className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${role === 'Supporter'
-                      ? 'border-[#FF6B4A] bg-[#FFF9F5] ring-2 ring-[#FF6B4A]/30'
-                      : 'border-[#E5E7EB] bg-white hover:bg-slate-50'
+                    ? 'border-[#FF6B4A] bg-[#FFF9F5] ring-2 ring-[#FF6B4A]/30'
+                    : 'border-[#E5E7EB] bg-white hover:bg-slate-50'
                     }`}
                 >
                   <div className="flex items-center justify-between">
@@ -132,8 +132,8 @@ export default function RegisterPage() {
                   type="button"
                   onClick={() => setRole('Creator')}
                   className={`p-3 rounded-xl border text-left flex flex-col justify-between transition-all ${role === 'Creator'
-                      ? 'border-[#FF6B4A] bg-[#FFF9F5] ring-2 ring-[#FF6B4A]/30'
-                      : 'border-[#E5E7EB] bg-white hover:bg-slate-50'
+                    ? 'border-[#FF6B4A] bg-[#FFF9F5] ring-2 ring-[#FF6B4A]/30'
+                    : 'border-[#E5E7EB] bg-white hover:bg-slate-50'
                     }`}
                 >
                   <div className="flex items-center justify-between">
